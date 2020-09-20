@@ -30,7 +30,7 @@ else if you have already the google benchmark installed
 
 ``make``
 
-``./findMinimumIndex_bench --benchmark_report_aggregates_only=true --benchmark_repetitions=20``
+``./transforms_bench --benchmark_report_aggregates_only=true --benchmark_repetitions=20``
 
 # What is included so far
 
