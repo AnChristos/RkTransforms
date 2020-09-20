@@ -1,6 +1,9 @@
 
-# Clone
+# If you have already google benchmark installed
 
+``git clone https://github.com/AnChristos/RkTransforms.git``
+
+# Also install google benchmark 
 Assuming you want also the google bench mark code
 
 ``git clone --recursive https://github.com/AnChristos/RkTransforms.git``
@@ -8,7 +11,7 @@ Assuming you want also the google bench mark code
 ``cd RkTransforms/``
 
 
-The following Will install the benchmark under /user/.local
+The following will install the benchmark under `${HOME}/.local`
 
 ``source buildGoogleBenchmark.sh``
 
@@ -18,9 +21,6 @@ edit
 
 to change location
 
-else if you have already the google benchmark installed 
-
-``git clone https://github.com/AnChristos/RkTransforms.git``
 
 # Build with CMake 
 
@@ -32,10 +32,3 @@ else if you have already the google benchmark installed
 
 ``./transforms_bench --benchmark_report_aggregates_only=true --benchmark_repetitions=20``
 
-# What is included so far
-
-- "C" style (2 variations)
-- "STL" style
-- Using SSE intrinsics
-- Using AVX2 intrinsics
-- Using SSE/AVX2 via compiler vector extension
