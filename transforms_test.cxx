@@ -22,7 +22,7 @@ main()
 
 
   transform(P,S);
-  transformVec(P,S);
+  transformVec(Pvec,S);
 
   std::cout << '\n' <<'\n';
   for (int i = 0; i < 45; ++i) {

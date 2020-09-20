@@ -1,7 +1,6 @@
 #include "transforms.h"
 void
-transform(double* __restrict__ P,
-          const double* __restrict__ S)
+transform(double* __restrict__ P, const double* __restrict__ S)
 {
 
   const double s0 = P[7] * S[0] + P[8] * S[1] + P[9] * S[2];
@@ -43,8 +42,7 @@ transform(double* __restrict__ P,
 }
 
 void
-transformVec(double* __restrict__ P,
-             const double* __restrict__ S)
+transformVec(double* __restrict__ P, const double* __restrict__ S)
 {
   using namespace CxxUtils;
   const double s0 = P[7] * S[0] + P[8] * S[1] + P[9] * S[2];
@@ -60,49 +58,47 @@ transformVec(double* __restrict__ P,
   vec<double, 2> Pin1{ P[7], P[8] };
   vec<double, 2> Pin2{ P[9], P[10] };
   vec<double, 2> Pin3{ P[11], P[12] };
-  Pin1 -= s0 * Pmult1;
-  Pin2 -= s0 * Pmult2;
-  Pin3 -= s0 * Pmult3;
-  vstore(&P[7], Pin1);
-  vstore(&P[9], Pin2);
-  vstore(&P[11], Pin3);
-
   vec<double, 2> Pin4{ P[14], P[15] };
   vec<double, 2> Pin5{ P[16], P[17] };
   vec<double, 2> Pin6{ P[18], P[19] };
-  Pin4 -= s1 * Pmult1;
-  Pin5 -= s1 * Pmult2;
-  Pin6 -= s1 * Pmult3;
-  vstore(&P[14], Pin4);
-  vstore(&P[16], Pin5);
-  vstore(&P[18], Pin6);
-
   vec<double, 2> Pin7{ P[21], P[22] };
   vec<double, 2> Pin8{ P[23], P[24] };
   vec<double, 2> Pin9{ P[25], P[26] };
-  Pin7 -= s2 * Pmult1;
-  Pin8 -= s2 * Pmult2;
-  Pin9 -= s2 * Pmult3;
-  vstore(&P[21], Pin7);
-  vstore(&P[23], Pin8);
-  vstore(&P[25], Pin9);
-
   vec<double, 2> Pin10{ P[28], P[29] };
   vec<double, 2> Pin11{ P[30], P[31] };
   vec<double, 2> Pin12{ P[32], P[33] };
-  Pin10 -= s3 * Pmult1;
-  Pin11 -= s3 * Pmult2;
-  Pin12 -= s3 * Pmult3;
-  vstore(&P[28], Pin10);
-  vstore(&P[30], Pin11);
-  vstore(&P[32], Pin12);
-
   vec<double, 2> Pin13{ P[35], P[36] };
   vec<double, 2> Pin14{ P[37], P[38] };
   vec<double, 2> Pin15{ P[39], P[40] };
+
+  Pin1 -= s0 * Pmult1;
+  Pin2 -= s0 * Pmult2;
+  Pin3 -= s0 * Pmult3;
+  Pin4 -= s1 * Pmult1;
+  Pin5 -= s1 * Pmult2;
+  Pin6 -= s1 * Pmult3;
+  Pin7 -= s2 * Pmult1;
+  Pin8 -= s2 * Pmult2;
+  Pin9 -= s2 * Pmult3;
+  Pin10 -= s3 * Pmult1;
+  Pin11 -= s3 * Pmult2;
+  Pin12 -= s3 * Pmult3;
   Pin13 -= s4 * Pmult1;
   Pin14 -= s4 * Pmult2;
   Pin15 -= s4 * Pmult3;
+
+  vstore(&P[7], Pin1);
+  vstore(&P[9], Pin2);
+  vstore(&P[11], Pin3);
+  vstore(&P[14], Pin4);
+  vstore(&P[16], Pin5);
+  vstore(&P[18], Pin6);
+  vstore(&P[21], Pin7);
+  vstore(&P[23], Pin8);
+  vstore(&P[25], Pin9);
+  vstore(&P[28], Pin10);
+  vstore(&P[30], Pin11);
+  vstore(&P[32], Pin12);
   vstore(&P[35], Pin13);
   vstore(&P[37], Pin14);
   vstore(&P[39], Pin15);
