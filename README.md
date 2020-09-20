@@ -1,6 +1,9 @@
 
-# Clone
+# If you have already google benchmark installed
 
+``git clone https://github.com/AnChristos/RkTransforms.git``
+
+# Also install google benchmark 
 Assuming you want also the google bench mark code
 
 ``git clone --recursive https://github.com/AnChristos/RkTransforms.git``
@@ -18,9 +21,6 @@ edit
 
 to change location
 
-else if you have already the google benchmark installed 
-
-``git clone https://github.com/AnChristos/RkTransforms.git``
 
 # Build with CMake 
 
