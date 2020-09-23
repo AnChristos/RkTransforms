@@ -111,55 +111,59 @@ transformVec(double* __restrict__ P, const double* __restrict__ S)
   vstore(&P[39], Pin15);
 }
 
-
-void transformVec2(double* __restrict__ P, const double* __restrict__ S) {
+void
+transformVec2(double* __restrict__ P, const double* __restrict__ S)
+{
   using namespace CxxUtils;
   vec<double, 2> Pin1;
   vload(Pin1, &P[7]);
-  vec<double, 2> Pin2;
-  vload(Pin2, &P[9]);
-  vec<double, 2> Pin3;
-  vload(Pin3, &P[11]);
+
   vec<double, 2> Pin4;
   vload(Pin4, &P[14]);
-  vec<double, 2> Pin5;
-  vload(Pin5, &P[16]);
-  vec<double, 2> Pin6;
-  vload(Pin6, &P[18]);
   vec<double, 2> Pin7;
   vload(Pin7, &P[21]);
-  vec<double, 2> Pin8;
-  vload(Pin8, &P[23]);
-  vec<double, 2> Pin9;
-  vload(Pin9, &P[25]);
   vec<double, 2> Pin10;
   vload(Pin10, &P[28]);
-  vec<double, 2> Pin11;
-  vload(Pin11, &P[30]);
-  vec<double, 2> Pin12;
-  vload(Pin12, &P[32]);
+
   vec<double, 2> Pin13;
   vload(Pin13, &P[35]);
-  vec<double, 2> Pin14;
-  vload(Pin14, &P[37]);
-  vec<double, 2> Pin15;
-  vload(Pin15, &P[39]);
 
-  vec<double, 2> multS{S[0], S[1]};
+  vec<double, 2> multS{ S[0], S[1] };
   vec<double, 2> multS0 = Pin1 * multS;
   vec<double, 2> multS1 = Pin4 * multS;
   vec<double, 2> multS2 = Pin7 * multS;
   vec<double, 2> multS3 = Pin10 * multS;
   vec<double, 2> multS4 = Pin13 * multS;
-  const double s0 = multS0[0] + multS0[1] + Pin2[0] * S[2];
-  const double s1 = multS1[0] + multS1[1] + Pin5[0] * S[2];
-  const double s2 = multS2[0] + multS2[1] + Pin8[0] * S[2];
-  const double s3 = multS3[0] + multS3[1] + Pin11[0] * S[2];
-  const double s4 = multS4[0] + multS4[1] + Pin14[0] * S[2];
+  const double s0 = multS0[0] + multS0[1] + P[9] * S[2];
+  const double s1 = multS1[0] + multS1[1] + P[16] * S[2];
+  const double s2 = multS2[0] + multS2[1] + P[23] * S[2];
+  const double s3 = multS3[0] + multS3[1] + P[30] * S[2];
+  const double s4 = multS4[0] + multS4[1] + P[37] * S[2];
 
-  vec<double, 2> Pmult1 = {P[3], P[4]};
-  vec<double, 2> Pmult2 = {P[5], P[42]};
-  vec<double, 2> Pmult3 = {P[43], P[44]};
+  vec<double, 2> Pin2;
+  vload(Pin2, &P[9]);
+  vec<double, 2> Pin3;
+  vload(Pin3, &P[11]);
+  vec<double, 2> Pin5;
+  vload(Pin5, &P[16]);
+  vec<double, 2> Pin6;
+  vload(Pin6, &P[18]);
+  vec<double, 2> Pin8;
+  vload(Pin8, &P[23]);
+  vec<double, 2> Pin9;
+  vload(Pin9, &P[25]);
+  vec<double, 2> Pin11;
+  vload(Pin11, &P[30]);
+  vec<double, 2> Pin12;
+  vload(Pin12, &P[32]);
+  vec<double, 2> Pin14;
+  vload(Pin14, &P[37]);
+  vec<double, 2> Pin15;
+  vload(Pin15, &P[39]);
+
+  vec<double, 2> Pmult1 = { P[3], P[4] };
+  vec<double, 2> Pmult2 = { P[5], P[42] };
+  vec<double, 2> Pmult3 = { P[43], P[44] };
 
   Pin1 -= s0 * Pmult1;
   Pin2 -= s0 * Pmult2;
