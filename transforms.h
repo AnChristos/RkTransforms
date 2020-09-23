@@ -10,4 +10,9 @@ void
 transformVec(double* __restrict__ P,
              const double* __restrict__ S);
 
+void
+transformVec2(double* __restrict__ P,
+             const double* __restrict__ S);
+
+
 #endif

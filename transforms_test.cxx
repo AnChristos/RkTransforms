@@ -9,24 +9,26 @@ main()
 
   double P[45] = {};
   double Pvec[45] = {};
+  double Pvec2[45] = {};
   std::cout << "={";
   for (int i = 0; i < 45; ++i) {
-    P[i] = 1e-02 * (i+1);
+    P[i] = 1e-02 * (i + 1);
     Pvec[i] = P[i];
-    std::cout << Pvec[i] << ", ";
-    if (i!=0 && i % 4 == 0) {
+    Pvec2[i] = P[i];
+    std::cout << P[i] << ", ";
+    if (i != 0 && i % 4 == 0) {
       std::cout << '\n';
     }
   }
   std::cout << "}; " << '\n';
 
+  transform(P, S);
+  transformVec(Pvec, S);
+  transformVec2(Pvec2, S);
 
-  transform(P,S);
-  transformVec(Pvec,S);
-
-  std::cout << '\n' <<'\n';
+  std::cout << '\n' << '\n';
   for (int i = 0; i < 45; ++i) {
-    std::cout << P[i] << " , " << Pvec[i] << '\n';
+    std::cout << P[i] << " , " << Pvec[i] << " , " << Pvec2[i] << '\n';
   }
 
   return 0;
