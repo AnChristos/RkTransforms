@@ -117,22 +117,20 @@ transformVec2(double* __restrict__ P, const double* __restrict__ S)
   using namespace CxxUtils;
   vec<double, 2> Pin1;
   vload(Pin1, &P[7]);
-
+  vec<double, 2> multS{ S[0], S[1] };
+  vec<double, 2> multS0 = Pin1 * multS;
   vec<double, 2> Pin4;
   vload(Pin4, &P[14]);
+  vec<double, 2> multS1 = Pin4 * multS;
   vec<double, 2> Pin7;
   vload(Pin7, &P[21]);
+  vec<double, 2> multS2 = Pin7 * multS;
   vec<double, 2> Pin10;
   vload(Pin10, &P[28]);
+  vec<double, 2> multS3 = Pin10 * multS;
 
   vec<double, 2> Pin13;
   vload(Pin13, &P[35]);
-
-  vec<double, 2> multS{ S[0], S[1] };
-  vec<double, 2> multS0 = Pin1 * multS;
-  vec<double, 2> multS1 = Pin4 * multS;
-  vec<double, 2> multS2 = Pin7 * multS;
-  vec<double, 2> multS3 = Pin10 * multS;
   vec<double, 2> multS4 = Pin13 * multS;
   const double s0 = multS0[0] + multS0[1] + P[9] * S[2];
   const double s1 = multS1[0] + multS1[1] + P[16] * S[2];
