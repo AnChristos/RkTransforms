@@ -17,12 +17,8 @@ transform_bench(benchmark::State& state)
                        0.37, 0.38, 0.39, 0.4,  0.41, 0.42, 0.43, 0.44, 0.45 };
       // Jacobian production
       //
-      transform(P, S);
-      double sum = 0;
-      for (int i = 0; i < 45; ++i) {
-        sum += P[i];
-      }
-      benchmark::DoNotOptimize(sum);
+      double sum;
+      benchmark::DoNotOptimize(sum =transform(P, S));
       benchmark::ClobberMemory();
     }
   }
@@ -42,12 +38,8 @@ transformVec_bench(benchmark::State& state)
                        0.19, 0.2,  0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27,
                        0.28, 0.29, 0.3,  0.31, 0.32, 0.33, 0.34, 0.35, 0.36,
                        0.37, 0.38, 0.39, 0.4,  0.41, 0.42, 0.43, 0.44, 0.45 };
-      transformVec(P, S);
-      double sum = 0;
-      for (int i = 0; i < 45; ++i) {
-        sum += P[i];
-      }
-      benchmark::DoNotOptimize(sum);
+      double sum;
+      benchmark::DoNotOptimize(sum =transformVec(P, S));
       benchmark::ClobberMemory();
     }
   }
@@ -67,12 +59,8 @@ transformVec2_bench(benchmark::State& state)
                        0.19, 0.2,  0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27,
                        0.28, 0.29, 0.3,  0.31, 0.32, 0.33, 0.34, 0.35, 0.36,
                        0.37, 0.38, 0.39, 0.4,  0.41, 0.42, 0.43, 0.44, 0.45 };
-      transformVec2(P, S);
-      double sum = 0;
-      for (int i = 0; i < 45; ++i) {
-        sum += P[i];
-      }
-      benchmark::DoNotOptimize(sum);
+      double sum;
+      benchmark::DoNotOptimize(sum =transformVec2(P, S));
       benchmark::ClobberMemory();
     }
   }
