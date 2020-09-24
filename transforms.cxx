@@ -42,11 +42,8 @@ transform(double* __restrict__ P, const double* __restrict__ S)
   P[39] -= (s4 * P[43]);
   P[40] -= (s4 * P[44]);
 
-  double sum = 0;
-  for (int i = 0; i < 45; ++i) {
-    sum += P[i];
-  }
-  return sum;
+
+  return P[7];
 }
 
 double
@@ -118,11 +115,7 @@ transformVec(double* __restrict__ P, const double* __restrict__ S)
   vstore(&P[37], Pin14);
   vstore(&P[39], Pin15);
 
-  double sum = 0;
-  for (int i = 0; i < 45; ++i) {
-    sum += P[i];
-  }
-  return sum;
+  return P[7];
 }
 
 double
@@ -212,9 +205,6 @@ transformVec2(double* __restrict__ P, const double* __restrict__ S)
   vstore(&P[37], Pin14);
   vstore(&P[39], Pin15);
 
-  double sum = 0;
-  for (int i = 0; i < 45; ++i) {
-    sum += P[i];
-  }
-  return sum;
+
+  return P[7];
 }
