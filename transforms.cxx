@@ -154,21 +154,22 @@ transformVec2(double* __restrict__ P, const double* __restrict__ S)
   vload(dZdAx_dL0, &P[9]);
   vec<double, 2> dAydAz_dL0;
   vload(dAydAz_dL0, &P[11]);
+
   vec<double, 2> dZdAx_dL1;
   vload(dZdAx_dL1, &P[16]);
-
   vec<double, 2> dAydAz_dL1;
   vload(dAydAz_dL1, &P[18]);
+
   vec<double, 2> dZdAx_dPhi;
   vload(dZdAx_dPhi, &P[23]);
   vec<double, 2> dAydAz_dPhi;
-
   vload(dAydAz_dPhi, &P[25]);
+
   vec<double, 2> dZdAx_dTheta;
   vload(dZdAx_dTheta, &P[30]);
   vec<double, 2> dAydAz_dTheta;
-
   vload(dAydAz_dTheta, &P[32]);
+
   vec<double, 2> dZdAx_dCM;
   vload(dZdAx_dCM, &P[37]);
   vec<double, 2> dydAz_dCM;
