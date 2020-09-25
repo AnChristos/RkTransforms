@@ -16,8 +16,7 @@ transform_bench(benchmark::State& state)
   for (auto _ : state) {
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
-      double dummy;
-      benchmark::DoNotOptimize(dummy = transform(P, S));
+      double dummy = transform(P, S);
       benchmark::DoNotOptimize(&dummy);
       benchmark::ClobberMemory();
     }
@@ -38,8 +37,7 @@ transformVec_bench(benchmark::State& state)
   for (auto _ : state) {
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
-      double dummy;
-      benchmark::DoNotOptimize(dummy = transformVec(P, S));
+      double dummy = transformVec(P, S);
       benchmark::DoNotOptimize(&dummy);
       benchmark::ClobberMemory();
     }
@@ -60,8 +58,7 @@ transformVec2_bench(benchmark::State& state)
   for (auto _ : state) {
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
-      double dummy;
-      benchmark::DoNotOptimize(dummy = transformVec2(P, S));
+      double dummy = transformVec2(P, S);
       benchmark::DoNotOptimize(&dummy);
       benchmark::ClobberMemory();
     }
@@ -82,8 +79,7 @@ transformVec6Transf_bench(benchmark::State& state)
   for (auto _ : state) {
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
-      double dummy;
-      benchmark::DoNotOptimize(dummy = transformVec6Transf(P, S));
+      double dummy = transformVec6Transf(P, S);
       benchmark::DoNotOptimize(&dummy);
       benchmark::ClobberMemory();
     }
@@ -105,8 +101,7 @@ transformVec6_bench(benchmark::State& state)
   for (auto _ : state) {
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
-      double dummy;
-      benchmark::DoNotOptimize(dummy = transformVec6(P, S));
+      double dummy = transformVec6(P, S);
       benchmark::DoNotOptimize(&dummy);
       benchmark::ClobberMemory();
     }
