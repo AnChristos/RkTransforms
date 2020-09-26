@@ -223,6 +223,114 @@ transformVec2(double* __restrict__ P, const double* __restrict__ S)
 
   return P[7];
 }
+double
+transformVec6Array(double* __restrict__ P, const double* __restrict__ S)
+{
+
+  using namespace CxxUtils;
+  using vec2 = CxxUtils::vec<double, 2>;
+  // dL0    /dL1    /dPhi   /dThe   /dCM
+  //  dX /   P[ 7]   P[14]   P[21]   P[28]   P[35]
+  vec2 dX0{P[7], P[14]};
+  vec2 dX1{P[21], P[28]};
+  vec2 dX2{P[35]};
+
+  //  dY /   P[ 8]   P[15]   P[22]   P[29]   P[36]
+  vec2 dY0{P[8], P[15]};
+  vec2 dY1{P[22], P[29]};
+  vec2 dY2{P[36]};
+
+  // Z  ->P[2]  dZ /   P[ 9]   P[16]   P[23]   P[30]   P[37]
+  vec2 dZ0{P[9], P[16]};
+  vec2 dZ1{P[23], P[30]};
+  vec2 dZ2{P[37]};
+
+  // dAx/   P[10]   P[17]   P[24]   P[31]   P[38]
+  vec2 dAx0{P[10], P[17]};
+  vec2 dAx1{P[24], P[31]};
+  vec2 dAx2{P[38]};
+
+  // dAy/   P[11]   P[18]   P[25]   P[32]   P[39]
+  vec2 dAy0{P[11], P[18]};
+  vec2 dAy1{P[25], P[32]};
+  vec2 dAy2{P[39]};
+
+  // dAz/   P[12]   P[19]   P[26]   P[33]   P[40]
+  vec2 dAz0{P[12], P[19]};
+  vec2 dAz1{P[26], P[33]};
+  vec2 dAz2{P[40]};
+
+  // dCM/   P[13]   P[20]   P[27]   P[34]   P[41]
+  vec2 dCM0{P[13], P[20]};
+  vec2 dCM1{P[27], P[34]};
+  vec2 dCM2{P[41]};
+
+  vec2 s0 = S[0] * dX0 + S[1] * dY0 + S[2] * dZ0;
+  dX0 -= s0 * P[3];
+  dY0 -= s0 * P[4];
+  dZ0 -= s0 * P[5];
+  dAx0 -= s0 * P[42];
+  dAy0 -= s0 * P[43];
+  dAz0 -= s0 * P[44];
+
+  vec2 s1 = S[0] * dX1 + S[1] * dY1 + S[2] * dZ1;
+  dX1 -= s1 * P[3];
+  dY1 -= s1 * P[4];
+  dZ1 -= s1 * P[5];
+  dAx1 -= s1 * P[42];
+  dAy1 -= s1 * P[43];
+  dAz1 -= s1 * P[44];
+
+  vec2 s2 = S[0] * dX2 + S[1] * dY2 + S[2] * dZ2;
+  dX2 -= s2 * P[3];
+  dY2 -= s2 * P[4];
+  dZ2 -= s2 * P[5];
+  dAx2 -= s2 * P[42];
+  dAy2 -= s2 * P[43];
+  dAz2 -= s2 * P[44];
+
+  P[7] = dX0[0];
+  P[8] = dY0[0];
+  P[9] = dZ0[0];
+  P[10] = dAx0[0];
+  P[11] = dAy0[0];
+  P[12] = dAz0[0];
+  P[13] = dCM0[0];
+
+  P[14] = dX0[1];
+  P[15] = dY0[1];
+  P[16] = dZ0[1];
+  P[17] = dAx0[1];
+  P[18] = dAy0[1];
+  P[19] = dAz0[1];
+  P[20] = dCM0[1];
+
+  P[21] = dX1[0];
+  P[22] = dY1[0];
+  P[23] = dZ1[0];
+  P[24] = dAx1[0];
+  P[25] = dAy1[0];
+  P[26] = dAz1[0];
+  P[27] = dCM1[0];
+
+  P[28] = dX1[1];
+  P[29] = dY1[1];
+  P[30] = dZ1[1];
+  P[31] = dAx1[1];
+  P[32] = dAy1[1];
+  P[33] = dAz1[1];
+  P[34] = dCM1[1];
+
+  P[35] = dX2[0];
+  P[36] = dY2[0];
+  P[37] = dZ2[0];
+  P[38] = dAx2[0];
+  P[39] = dAy2[0];
+  P[40] = dAz2[0];
+  P[41] = dCM2[0];
+
+  return P[7];
+}
 
 /*
  * Implementation from Scott Snyder
@@ -311,24 +419,6 @@ Pstruct6::toP(double* __restrict__ P) const __restrict__
   P[44] = dAds[2];
 }
 
-double
-transformVec6Transf(double* __restrict__ P_in, const double* __restrict__ S)
-{
-  using vec2 = Pstruct6::vec2;
-  Pstruct6 P;
-  P.fromP(P_in);
-  for (int i = 0; i < 3; i++) {
-    vec2 s = S[0] * P.dX[i] + S[1] * P.dY[i] + S[2] * P.dZ[i];
-    P.dX[i] -= s * P.dir[0];
-    P.dY[i] -= s * P.dir[1];
-    P.dZ[i] -= s * P.dir[2];
-    P.dAx[i] -= s * P.dAds[0];
-    P.dAy[i] -= s * P.dAds[1];
-    P.dAz[i] -= s * P.dAds[2];
-  }
-  P.toP(P_in);
-  return P_in[7];
-}
 double
 transformVec6(Pstruct6& __restrict__ P, const double* __restrict__ S)
 {

@@ -33,7 +33,7 @@ main()
   transform(P, S);
   transformVec(Pvec, S);
   transformVec2(Pvec2, S);
-  transformVec6Transf(Pvec6, S);
+  transformVec6Array(Pvec6, S);
 
   std::cout << '\n' << '\n';
   for (int i = 0; i < 45; ++i) {

@@ -40,8 +40,9 @@ transformVec(double* __restrict__ P, const double* __restrict__ S);
 double
 transformVec2(double* __restrict__ P, const double* __restrict__ S);
 double
-transformVec6Transf(double* __restrict__ P_in, const double* __restrict__ S);
+transformVec6Array(double* __restrict__ P, const double* __restrict__ S);
 double
 transformVec6(Pstruct6& __restrict__ P, const double* __restrict__ S);
+
 
 #endif

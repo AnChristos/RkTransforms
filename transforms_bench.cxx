@@ -67,7 +67,7 @@ transformVec2_bench(benchmark::State& state)
 BENCHMARK(transformVec2_bench)->RangeMultiplier(2)->Range(1024, 8192);
 
 static void
-transformVec6Transf_bench(benchmark::State& state)
+transformVec6Array_bench(benchmark::State& state)
 {
   const double S[3] = { 0.4, 0.2, 0.9 };
   double P[45] = { 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,
@@ -79,13 +79,13 @@ transformVec6Transf_bench(benchmark::State& state)
   for (auto _ : state) {
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
-      double dummy = transformVec6Transf(P, S);
+      double dummy = transformVec6Array(P, S);
       benchmark::DoNotOptimize(&dummy);
       benchmark::ClobberMemory();
     }
   }
 }
-BENCHMARK(transformVec6Transf_bench)->RangeMultiplier(2)->Range(1024, 8192);
+BENCHMARK(transformVec6Array_bench)->RangeMultiplier(2)->Range(1024, 8192);
 
 static void
 transformVec6_bench(benchmark::State& state)
