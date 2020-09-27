@@ -1,6 +1,71 @@
 #include "transforms.h"
 
 ATH_ENABLE_VECTORIZATION;
+
+namespace {
+inline void
+helper(double* __restrict__ P,
+       const double s0,
+       const double s1,
+       const double s2,
+       const double s3,
+       const double s4)
+{
+  using namespace CxxUtils;
+  using vec2 = CxxUtils::vec<double, 2>;
+  using vec4 = CxxUtils::vec<double, 4>;
+
+  vec2 Pmult1 = { P[3], P[4] };
+  vec4 Pmult2 = { P[5], P[42], P[43], P[44] };
+
+  vec2 dXdL0_dYdL0;
+  vload(dXdL0_dYdL0, &P[7]);
+  vec4 dZdL0_dAxdL0_dAydL0_dAzdL0;
+  vload(dZdL0_dAxdL0_dAydL0_dAzdL0, &P[9]);
+  dXdL0_dYdL0 -= s0 * Pmult1;
+  dZdL0_dAxdL0_dAydL0_dAzdL0 -= s0 * Pmult2;
+  vstore(&P[7], dXdL0_dYdL0);
+  vstore(&P[9], dZdL0_dAxdL0_dAydL0_dAzdL0);
+
+  vec2 dXdL1_dYdL1;
+  vload(dXdL1_dYdL1, &P[14]);
+  vec4 dZdL1_dAxdL1_dAydL1_dAzdL1;
+  vload(dZdL1_dAxdL1_dAydL1_dAzdL1, &P[16]);
+  dXdL1_dYdL1 -= s1 * Pmult1;
+  dZdL1_dAxdL1_dAydL1_dAzdL1 -= s1 * Pmult2;
+  vstore(&P[14], dXdL1_dYdL1);
+  vstore(&P[16], dZdL1_dAxdL1_dAydL1_dAzdL1);
+
+  vec2 dXdPhi_dYdPhi;
+  vload(dXdPhi_dYdPhi, &P[21]);
+  vec4 dZdPhi_dAxdPhi_dAydPhi_dAzdPhi;
+  vload(dZdPhi_dAxdPhi_dAydPhi_dAzdPhi, &P[23]);
+  dXdPhi_dYdPhi -= s2 * Pmult1;
+  dZdPhi_dAxdPhi_dAydPhi_dAzdPhi -= s2 * Pmult2;
+  vstore(&P[21], dXdPhi_dYdPhi);
+  vstore(&P[23], dZdPhi_dAxdPhi_dAydPhi_dAzdPhi);
+
+  vec2 dXdTheta_dYdTheta;
+  vload(dXdTheta_dYdTheta, &P[28]);
+  vec4 dZdTheta_dAxdTheta_dAydTheta_dAzdTheta;
+  vload(dZdTheta_dAxdTheta_dAydTheta_dAzdTheta, &P[30]);
+  dXdTheta_dYdTheta -= s3 * Pmult1;
+  dZdTheta_dAxdTheta_dAydTheta_dAzdTheta -= s3 * Pmult2;
+  vstore(&P[28], dXdTheta_dYdTheta);
+  vstore(&P[30], dZdTheta_dAxdTheta_dAydTheta_dAzdTheta);
+
+  vec2 dXdCM_dYdCM;
+  vload(dXdCM_dYdCM, &P[35]);
+  vec4 dZdCM_dAxdCM_AydCM_dAzdCM;
+  vload(dZdCM_dAxdCM_AydCM_dAzdCM, &P[37]);
+  dXdCM_dYdCM -= s4 * Pmult1;
+  dZdCM_dAxdCM_AydCM_dAzdCM -= s4 * Pmult2;
+  vstore(&P[35], dXdCM_dYdCM);
+  vstore(&P[37], dZdCM_dAxdCM_AydCM_dAzdCM);
+}
+
+}
+
 double
 transform(double* __restrict__ P, const double* __restrict__ S)
 {
@@ -127,81 +192,12 @@ transformVec(double* __restrict__ P, const double* __restrict__ S)
 double
 transformVec2(double* __restrict__ P, const double* __restrict__ S)
 {
-  using namespace CxxUtils;
-  using vec2 = CxxUtils::vec<double, 2>;
-  using vec4 = CxxUtils::vec<double, 4>;
-
-  vec2 multS{ S[0], S[1] };
-
-  vec2 dXdL0_dYdL0;
-  vload(dXdL0_dYdL0, &P[7]);
-  vec2 multS0 = dXdL0_dYdL0 * multS;
-
-  vec2 dXdL1_dYdL1;
-  vload(dXdL1_dYdL1, &P[14]);
-  vec2 multS1 = dXdL1_dYdL1 * multS;
-
-  vec2 dXdPhi_dYdPhi;
-  vload(dXdPhi_dYdPhi, &P[21]);
-  vec2 multS2 = dXdPhi_dYdPhi * multS;
-
-  vec2 dXdTheta_dYdTheta;
-  vload(dXdTheta_dYdTheta, &P[28]);
-  vec2 multS3 = dXdTheta_dYdTheta * multS;
-
-  vec2 dXdCM_dYdCM;
-  vload(dXdCM_dYdCM, &P[35]);
-  vec2 multS4 = dXdCM_dYdCM * multS;
-
-  const double s0 = multS0[0] + multS0[1] + P[9] * S[2];
-  const double s1 = multS1[0] + multS1[1] + P[16] * S[2];
-  const double s2 = multS2[0] + multS2[1] + P[23] * S[2];
-  const double s3 = multS3[0] + multS3[1] + P[30] * S[2];
-  const double s4 = multS4[0] + multS4[1] + P[37] * S[2];
-
-  vec4 dZdL0_dAxdL0_dAydL0_dAzdL0;
-  vload(dZdL0_dAxdL0_dAydL0_dAzdL0, &P[9]);
-
-  vec4 dZdL1_dAxdL1_dAydL1_dAzdL1;
-  vload(dZdL1_dAxdL1_dAydL1_dAzdL1, &P[16]);
-
-  vec4 dZdPhi_dAxdPhi_dAydPhi_dAzdPhi;
-  vload(dZdPhi_dAxdPhi_dAydPhi_dAzdPhi, &P[23]);
-
-  vec4 dZdTheta_dAxdTheta_dAydTheta_dAzdTheta;
-  vload(dZdTheta_dAxdTheta_dAydTheta_dAzdTheta, &P[30]);
-
-  vec4 dZdCM_dAxdCM_AydCM_dAzdCM;
-  vload(dZdCM_dAxdCM_AydCM_dAzdCM, &P[37]);
-
-  vec2 Pmult1 = { P[3], P[4] };
-  vec4 Pmult2 = { P[5], P[42], P[43], P[44] };
-
-  dXdL0_dYdL0 -= s0 * Pmult1;
-  dZdL0_dAxdL0_dAydL0_dAzdL0 -= s0 * Pmult2;
-  vstore(&P[7], dXdL0_dYdL0);
-  vstore(&P[9], dZdL0_dAxdL0_dAydL0_dAzdL0);
-
-  dXdL1_dYdL1 -= s1 * Pmult1;
-  dZdL1_dAxdL1_dAydL1_dAzdL1 -= s1 * Pmult2;
-  vstore(&P[14], dXdL1_dYdL1);
-  vstore(&P[16], dZdL1_dAxdL1_dAydL1_dAzdL1);
-
-  dXdPhi_dYdPhi -= s2 * Pmult1;
-  dZdPhi_dAxdPhi_dAydPhi_dAzdPhi -= s2 * Pmult2;
-  vstore(&P[21], dXdPhi_dYdPhi);
-  vstore(&P[23], dZdPhi_dAxdPhi_dAydPhi_dAzdPhi);
-
-  dXdTheta_dYdTheta -= s3 * Pmult1;
-  dZdTheta_dAxdTheta_dAydTheta_dAzdTheta -= s3 * Pmult2;
-  vstore(&P[28], dXdTheta_dYdTheta);
-  vstore(&P[30], dZdTheta_dAxdTheta_dAydTheta_dAzdTheta);
-
-  dXdCM_dYdCM -= s4 * Pmult1;
-  dZdCM_dAxdCM_AydCM_dAzdCM -= s4 * Pmult2;
-  vstore(&P[35], dXdCM_dYdCM);
-  vstore(&P[37], dZdCM_dAxdCM_AydCM_dAzdCM);
-
+  const double s0 = P[7] * S[0] + P[8] * S[1] + P[9] * S[2];
+  const double s1 = P[14] * S[0] + P[15] * S[1] + P[16] * S[2];
+  const double s2 = P[21] * S[0] + P[22] * S[1] + P[23] * S[2];
+  const double s3 = P[28] * S[0] + P[29] * S[1] + P[30] * S[2];
+  const double s4 = P[35] * S[0] + P[36] * S[1] + P[37] * S[2];
+  helper(P, s0, s1, s2, s3, s4 );
   return P[7];
 }
 double
