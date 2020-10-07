@@ -36,8 +36,6 @@ struct alignas(32) Pstruct6
 double
 transform(double* __restrict__ P, const double* __restrict__ S);
 double
-transformVec(double* __restrict__ P, const double* __restrict__ S);
-double
 transformVec2(double* __restrict__ P, const double* __restrict__ S);
 double
 transformVec6(Pstruct6& __restrict__ P, const double* __restrict__ S);
