@@ -34,7 +34,6 @@ transform_bench(benchmark::State& state)
     for (int i = 0; i < n; ++i) {
       transform(P, S);
       benchmark::DoNotOptimize(P);
-      benchmark::ClobberMemory();
     }
   }
 }
@@ -49,7 +48,6 @@ transformVec2_bench(benchmark::State& state)
     for (int i = 0; i < n; ++i) {
       transformVec2(P, S);
       benchmark::DoNotOptimize(P);
-      benchmark::ClobberMemory();
     }
   }
 }
