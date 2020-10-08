@@ -6,7 +6,7 @@
 /*
  * A bit hacky way to create random inputs
  */
-double Pref[42];
+double Pref[45];
 double Sref[3];
 class InitArray
 {
@@ -15,7 +15,7 @@ public:
   {
     std::mt19937 gen;
     std::uniform_real_distribution<> dis(1.0, 10.0);
-    for (size_t i = 0; i < 42; ++i) {
+    for (size_t i = 0; i < 45; ++i) {
       Pref[i] = dis(gen);
     }
     for (size_t i = 0; i < 3; ++i) {
@@ -29,9 +29,9 @@ InitArray initArray;
 static void
 transform_bench(benchmark::State& state)
 {
-  double P[42];
+  double P[45];
   double S[3];
-  std::memcpy(P,Pref,42*sizeof(double));
+  std::memcpy(P,Pref,45*sizeof(double));
   std::memcpy(S,Sref,3*sizeof(double));
   for (auto _ : state) {
     const int n = state.range(0);
@@ -48,9 +48,9 @@ BENCHMARK(transform_bench)->RangeMultiplier(2)->Range(1024, 8192);
 static void
 transformVec2_bench(benchmark::State& state)
 {
-  double P[42];
+  double P[45];
   double S[3];
-  std::memcpy(P,Pref,42*sizeof(double));
+  std::memcpy(P,Pref,45*sizeof(double));
   std::memcpy(S,Sref,3*sizeof(double));
   for (auto _ : state) {
     const int n = state.range(0);
