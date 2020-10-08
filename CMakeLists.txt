@@ -14,12 +14,10 @@ find_package (Threads)
 
 
 add_executable(transforms_test 
-	       transforms.cxx
-	       transforms_test.cxx)
+	             transforms_test.cxx)
 
 add_executable(transforms_bench
-               transforms.cxx	
-	       transforms_bench.cxx)
+	             transforms_bench.cxx)
 
 target_link_libraries(transforms_test)
 target_link_libraries(transforms_bench benchmark::benchmark)

@@ -1,44 +1,108 @@
 #ifndef TRANSFORMS_H
 #define TRANSFORMS_H
-
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) &&             \
-  !defined(__COVERITY__) && !defined(__CUDACC__)
-#define ATH_ENABLE_VECTORIZATION                                               \
-  _Pragma("GCC optimize (\"tree-vectorize\")") class                           \
-    ATH_ENABLE_VECTORIZATION_SWALLOW_SEMICOLON
-#else
-#define ATH_ENABLE_VECTORIZATION                                               \
-  class ATH_ENABLE_VECTORIZATION_SWALLOW_SEMICOLON
-#endif
-
 #include "vec.h"
-struct alignas(32) Pstruct6
+inline void
+transform(double* __restrict__ P, const double* __restrict__ S)
 {
+
+  const double s0 = P[7] * S[0] + P[8] * S[1] + P[9] * S[2];
+  const double s1 = P[14] * S[0] + P[15] * S[1] + P[16] * S[2];
+  const double s2 = P[21] * S[0] + P[22] * S[1] + P[23] * S[2];
+  const double s3 = P[28] * S[0] + P[29] * S[1] + P[30] * S[2];
+  const double s4 = P[35] * S[0] + P[36] * S[1] + P[37] * S[2];
+
+  P[7] -= (s0 * P[3]);
+  P[8] -= (s0 * P[4]);
+  P[9] -= (s0 * P[5]);
+  P[10] -= (s0 * P[42]);
+  P[11] -= (s0 * P[43]);
+  P[12] -= (s0 * P[44]);
+  P[14] -= (s1 * P[3]);
+  P[15] -= (s1 * P[4]);
+  P[16] -= (s1 * P[5]);
+  P[17] -= (s1 * P[42]);
+  P[18] -= (s1 * P[43]);
+  P[19] -= (s1 * P[44]);
+  P[21] -= (s2 * P[3]);
+  P[22] -= (s2 * P[4]);
+  P[23] -= (s2 * P[5]);
+  P[24] -= (s2 * P[42]);
+  P[25] -= (s2 * P[43]);
+  P[26] -= (s2 * P[44]);
+  P[28] -= (s3 * P[3]);
+  P[29] -= (s3 * P[4]);
+  P[30] -= (s3 * P[5]);
+  P[31] -= (s3 * P[42]);
+  P[32] -= (s3 * P[43]);
+  P[33] -= (s3 * P[44]);
+  P[35] -= (s4 * P[3]);
+  P[36] -= (s4 * P[4]);
+  P[37] -= (s4 * P[5]);
+  P[38] -= (s4 * P[42]);
+  P[39] -= (s4 * P[43]);
+  P[40] -= (s4 * P[44]);
+}
+
+inline void
+transformVec2(double* __restrict__ P, const double* __restrict__ S)
+{
+  using namespace CxxUtils;
   using vec2 = CxxUtils::vec<double, 2>;
-  vec2 dX[3];
-  vec2 dY[3];
-  vec2 dZ[3];
-  vec2 dAx[3];
-  vec2 dAy[3];
-  vec2 dAz[3];
-  vec2 dCM[3];
+  using vec4 = CxxUtils::vec<double, 4>;
 
-  double pos[3];
-  double dir[3];
-  double dAds[3];
+  const double s0 = P[7] * S[0] + P[8] * S[1] + P[9] * S[2];
+  const double s1 = P[14] * S[0] + P[15] * S[1] + P[16] * S[2];
+  const double s2 = P[21] * S[0] + P[22] * S[1] + P[23] * S[2];
+  const double s3 = P[28] * S[0] + P[29] * S[1] + P[30] * S[2];
+  const double s4 = P[35] * S[0] + P[36] * S[1] + P[37] * S[2];
 
-  double dCMdCM;
-  double CM;
-  void fromP(const double* __restrict__P) __restrict__;
-  void toP(double* __restrict__ P) const __restrict__;
-};
+  vec2 Pmult1 = { P[3], P[4] };
+  vec4 Pmult2 = { P[5], P[42], P[43], P[44] };
 
-double
-transform(double* __restrict__ P, const double* __restrict__ S);
-double
-transformVec2(double* __restrict__ P, const double* __restrict__ S);
-double
-transformVec6(Pstruct6& __restrict__ P, const double* __restrict__ S);
+  vec2 dXdL0_dYdL0;
+  vload(dXdL0_dYdL0, &P[7]);
+  vec4 dZdL0_dAxdL0_dAydL0_dAzdL0;
+  vload(dZdL0_dAxdL0_dAydL0_dAzdL0, &P[9]);
+  dXdL0_dYdL0 -= s0 * Pmult1;
+  dZdL0_dAxdL0_dAydL0_dAzdL0 -= s0 * Pmult2;
+  vstore(&P[7], dXdL0_dYdL0);
+  vstore(&P[9], dZdL0_dAxdL0_dAydL0_dAzdL0);
 
+  vec2 dXdL1_dYdL1;
+  vload(dXdL1_dYdL1, &P[14]);
+  vec4 dZdL1_dAxdL1_dAydL1_dAzdL1;
+  vload(dZdL1_dAxdL1_dAydL1_dAzdL1, &P[16]);
+  dXdL1_dYdL1 -= s1 * Pmult1;
+  dZdL1_dAxdL1_dAydL1_dAzdL1 -= s1 * Pmult2;
+  vstore(&P[14], dXdL1_dYdL1);
+  vstore(&P[16], dZdL1_dAxdL1_dAydL1_dAzdL1);
+
+  vec2 dXdPhi_dYdPhi;
+  vload(dXdPhi_dYdPhi, &P[21]);
+  vec4 dZdPhi_dAxdPhi_dAydPhi_dAzdPhi;
+  vload(dZdPhi_dAxdPhi_dAydPhi_dAzdPhi, &P[23]);
+  dXdPhi_dYdPhi -= s2 * Pmult1;
+  dZdPhi_dAxdPhi_dAydPhi_dAzdPhi -= s2 * Pmult2;
+  vstore(&P[21], dXdPhi_dYdPhi);
+  vstore(&P[23], dZdPhi_dAxdPhi_dAydPhi_dAzdPhi);
+
+  vec2 dXdTheta_dYdTheta;
+  vload(dXdTheta_dYdTheta, &P[28]);
+  vec4 dZdTheta_dAxdTheta_dAydTheta_dAzdTheta;
+  vload(dZdTheta_dAxdTheta_dAydTheta_dAzdTheta, &P[30]);
+  dXdTheta_dYdTheta -= s3 * Pmult1;
+  dZdTheta_dAxdTheta_dAydTheta_dAzdTheta -= s3 * Pmult2;
+  vstore(&P[28], dXdTheta_dYdTheta);
+  vstore(&P[30], dZdTheta_dAxdTheta_dAydTheta_dAzdTheta);
+
+  vec2 dXdCM_dYdCM;
+  vload(dXdCM_dYdCM, &P[35]);
+  vec4 dZdCM_dAxdCM_AydCM_dAzdCM;
+  vload(dZdCM_dAxdCM_AydCM_dAzdCM, &P[37]);
+  dXdCM_dYdCM -= s4 * Pmult1;
+  dZdCM_dAxdCM_AydCM_dAzdCM -= s4 * Pmult2;
+  vstore(&P[35], dXdCM_dYdCM);
+  vstore(&P[37], dZdCM_dAxdCM_AydCM_dAzdCM);
+}
 
 #endif

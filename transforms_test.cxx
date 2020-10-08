@@ -20,20 +20,12 @@ main()
   }
   std::cout << "}; " << '\n';
 
-  Pstruct6 Ps;
-  Ps.fromP(P);
-
   transform(P, S);
   transformVec2(Pvec2, S);
-  transformVec6(Ps, S);
-  double Pvec6[45] = {};
-  Ps.toP(Pvec6);
-
 
   std::cout << '\n' << '\n';
   for (int i = 0; i < 45; ++i) {
-    std::cout << P[i] << " , " << Pvec2[i] << " , "
-              << Pvec6[i] << " , " << '\n';
+    std::cout << P[i] << " , " << Pvec2[i] << " , " << '\n';
   }
 
   return 0;
