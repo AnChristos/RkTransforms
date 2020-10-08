@@ -2,32 +2,6 @@
 
 ATH_ENABLE_VECTORIZATION;
 
-namespace {
-inline void
-helper(double* __restrict__ P, const double* s)
-{
-  using namespace CxxUtils;
-  using vec2 = CxxUtils::vec<double, 2>;
-  using vec4 = CxxUtils::vec<double, 4>;
-  vec2 Pmult1 = { P[3], P[4] };
-  vec4 Pmult2 = { P[5], P[42], P[43], P[44] };
-
-  vec2 deriv1[5];
-  vec4 deriv2[5];
-
-  int ip = 7;
-  for (int i = 0; i < 5; ++i) {
-    vload(deriv1[i], &P[ip]);
-    vload(deriv2[i], &P[ip + 2]);
-    deriv1[i] -= s[i] * Pmult1;
-    deriv2[i] -= s[i] * Pmult2;
-    vstore(&P[ip], deriv1[i]);
-    vstore(&P[ip + 2], deriv2[i]);
-    ip += 7;
-  }
-}
-}
-
 double
 transform(double* __restrict__ P, const double* __restrict__ S)
 {
@@ -72,18 +46,6 @@ transform(double* __restrict__ P, const double* __restrict__ S)
   return P[7];
 }
 
-double
-transformVec(double* __restrict__ P, const double* __restrict__ S)
-{
-  const double s0 = P[7] * S[0] + P[8] * S[1] + P[9] * S[2];
-  const double s1 = P[14] * S[0] + P[15] * S[1] + P[16] * S[2];
-  const double s2 = P[21] * S[0] + P[22] * S[1] + P[23] * S[2];
-  const double s3 = P[28] * S[0] + P[29] * S[1] + P[30] * S[2];
-  const double s4 = P[35] * S[0] + P[36] * S[1] + P[37] * S[2];
-  const double s[5] = { s0, s1, s2, s3, s4 };
-  helper(P, s);
-  return P[7];
-}
 
 double
 transformVec2(double* __restrict__ P, const double* __restrict__ S)
