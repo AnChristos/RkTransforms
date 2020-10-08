@@ -33,7 +33,6 @@ transform_bench(benchmark::State& state)
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
       transform(P, S);
-      benchmark::DoNotOptimize(P);
     }
   }
 }
@@ -47,7 +46,6 @@ transformVec2_bench(benchmark::State& state)
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
       transformVec2(P, S);
-      benchmark::DoNotOptimize(P);
     }
   }
 }
