@@ -16,6 +16,6 @@ The following script from this repo will install the benchmark under ``${HOME}/.
 
 ``make``
 
-#Example
+# Example
 
 ``./transforms_bench --benchmark_report_aggregates_only=true --benchmark_repetitions=20``

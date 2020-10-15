@@ -24,7 +24,7 @@ main()
 
   std::cout << '\n' << '\n';
   for (int i = 0; i < 45; ++i) {
-    std::cout << P[i] << " , " << Pvec[i] << " , " << '\n';
+    std::cout << P[i] << " , " << Pvec[i] << " , diff : " << Pvec[i]- P[i] <<'\n';
   }
 
   return 0;
