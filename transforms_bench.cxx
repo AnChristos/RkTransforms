@@ -7,7 +7,7 @@
  * A bit hacky way to create random inputs
  */
 double P[45];
-double S[3];
+double Pvec[45];
 class InitArray
 {
 public:
@@ -16,10 +16,9 @@ public:
     std::mt19937 gen;
     std::uniform_real_distribution<> dis(1.0, 10.0);
     for (size_t i = 0; i < 45; ++i) {
-      P[i] = dis(gen);
-    }
-    for (size_t i = 0; i < 3; ++i) {
-      S[i] = dis(gen);
+      double in =  dis(gen);
+      P[i] = in;
+      Pvec[i]=in;
     }
   }
 };
@@ -32,7 +31,7 @@ transform_bench(benchmark::State& state)
   for (auto _ : state) {
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
-      transform(P, S);
+      globalToLocalHelper(P, 0.1,0.2,0.3,0.4,0.5);
     }
   }
 }
@@ -45,7 +44,7 @@ transformVec2_bench(benchmark::State& state)
   for (auto _ : state) {
     const int n = state.range(0);
     for (int i = 0; i < n; ++i) {
-      transformVec2(P, S);
+      globalToLocalVecHelper(Pvec, 0.1,0.2,0.3,0.4,0.5);
     }
   }
 }
